@@ -1,0 +1,31 @@
+import { Server } from 'http';
+import app from './app';
+import envVars from './app/config/env';
+import { connectRedis } from './app/config/redis.config';
+import connectDB from './app/config/mongodb.config';
+import serverGracefulShutdown from './app/utils/serverGracefulShutdown';
+import { initSocket } from './app/config/socket.config';
+
+let server: Server;
+
+const startServer = async () => {
+  try {
+    await connectDB();
+    await connectRedis();
+
+    server = app.listen(envVars.PORT, () => {
+      console.log(`✅ Server is running on port ${envVars.PORT}`);
+    });
+
+    // Initialize Socket.io
+    initSocket(server);
+
+    // Setup shutdown handlers
+    serverGracefulShutdown(server);
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+export default startServer;

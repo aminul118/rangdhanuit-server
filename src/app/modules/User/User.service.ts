@@ -1,0 +1,30 @@
+import httpStatus from 'http-status-codes';
+import AppError from '../../errorHelpers/AppError';
+import { IUser } from './User.interface';
+import { User } from './User.model';
+
+const createUserService = async (payload: IUser) => {
+  const isUserExist = await User.findOne({ email: payload.email });
+  if (isUserExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'User already exists');
+  }
+
+  const result = await User.create(payload);
+  return result;
+};
+
+const getAllUsersFromDB = async () => {
+  const result = await User.find();
+  return result;
+};
+
+const getSingleUserFromDB = async (id: string) => {
+  const result = await User.findById(id);
+  return result;
+};
+
+export const UserService = {
+  createUserService,
+  getAllUsersFromDB,
+  getSingleUserFromDB,
+};
