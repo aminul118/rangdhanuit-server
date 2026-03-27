@@ -3,8 +3,6 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status-codes";
 import { PortfolioService } from "./Portfolio.service";
-import { Portfolio } from "./Portfolio.model";
-import { QueryBuilder } from "../../utils/QueryBuilder";
 
 const createPortfolio = catchAsync(async (req: Request, res: Response) => {
   const result = await PortfolioService.createPortfolioIntoDB(req.body);
@@ -17,15 +15,7 @@ const createPortfolio = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllPortfolios = catchAsync(async (req: Request, res: Response) => {
-  const portfolioQuery = new QueryBuilder(Portfolio.find(), req.query)
-    .search(["title", "description"])
-    .filter()
-    .sort()
-    .paginate()
-    .fields();
-
-  const result = await portfolioQuery.modelQuery;
-  const meta = await portfolioQuery.countTotal();
+  const { result, meta } = await PortfolioService.getAllPortfoliosFromDB(req.query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

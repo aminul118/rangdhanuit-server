@@ -27,7 +27,7 @@ const getMe = catchAsync(async (req, res) => {
 });
 
 const getAllUsers = catchAsync(async (req, res) => {
-  const result = await UserService.getAllUsersFromDB();
+  const result = await UserService.getAllUsersFromDB(req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -48,6 +48,28 @@ const updateUserStatus = catchAsync(async (req, res) => {
   });
 });
 
+const updateUserRole = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { role } = req.body;
+  const result = await UserService.updateUserRole(id as string, role);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User role updated successfully',
+    data: result,
+  });
+});
+
+const getStatistics = catchAsync(async (req, res) => {
+  const result = await UserService.getStatistics();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Statistics retrieved successfully',
+    data: result,
+  });
+});
+
 const deleteUser = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await UserService.deleteUserFromDB(id as string);
@@ -64,5 +86,7 @@ export const UserController = {
   getMe,
   getAllUsers,
   updateUserStatus,
+  updateUserRole,
+  getStatistics,
   deleteUser,
 };

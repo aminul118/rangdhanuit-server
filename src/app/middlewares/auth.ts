@@ -9,11 +9,19 @@ import { UserRole } from '../modules/User/User.interface';
 
 const auth = (...requiredRoles: UserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
+    let token = req.headers.authorization;
+    if (!token && req.cookies) {
+      token = req.cookies.accessToken;
+    }
 
     // checking if the token is missing
     if (!token) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
+    }
+
+    // handle Bearer token
+    if (token.startsWith('Bearer ')) {
+      token = token.split(' ')[1];
     }
 
     // checking if the given token is valid
