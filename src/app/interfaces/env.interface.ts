@@ -1,4 +1,4 @@
-export type EnvConfig = {
+export interface EnvConfig {
   PORT: string;
   DB_URL: string;
   NODE_ENV: 'development' | 'production';
@@ -26,4 +26,4 @@ export type EnvConfig = {
     CLOUDINARY_API_KEY: string;
     CLOUDINARY_API_SECRET: string;
   };
-};
+}

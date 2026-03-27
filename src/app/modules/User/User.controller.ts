@@ -1,10 +1,11 @@
+import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status-codes';
 import { UserService } from './User.service';
 
 const createUser = catchAsync(async (req, res) => {
-  const result = await UserService.createUserIntoDB(req.body);
+  const result = await UserService.createUserService(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -13,6 +14,55 @@ const createUser = catchAsync(async (req, res) => {
   });
 });
 
+const getMe = catchAsync(async (req, res) => {
+  const { email, role } = req.user as JwtPayload;
+  const result = await UserService.getMe(email, role);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is retrieved successfully',
+    data: result,
+  });
+});
+
+const getAllUsers = catchAsync(async (req, res) => {
+  const result = await UserService.getAllUsersFromDB();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Users retrieved successfully',
+    data: result,
+  });
+});
+
+const updateUserStatus = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const result = await UserService.updateUserStatus(id as string, status);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User status updated successfully',
+    data: result,
+  });
+});
+
+const deleteUser = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await UserService.deleteUserFromDB(id as string);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User deleted successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   createUser,
+  getMe,
+  getAllUsers,
+  updateUserStatus,
+  deleteUser,
 };

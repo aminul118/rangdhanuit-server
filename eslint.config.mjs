@@ -8,10 +8,17 @@ export default tseslint.config(
   {
     rules: {
       'no-console': 'warn',
-      'no-unused-vars': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
       'prefer-const': 'error',
       'no-unused-expressions': 'error',
-      '@typescript-eslint/no-explicit-any': 'warn'
+      '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
 );

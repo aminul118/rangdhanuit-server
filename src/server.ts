@@ -5,6 +5,7 @@ import { connectRedis } from './app/config/redis.config';
 import connectDB from './app/config/mongodb.config';
 import serverGracefulShutdown from './app/utils/serverGracefulShutdown';
 import { initSocket } from './app/config/socket.config';
+import seedSuperAdmin from './app/utils/seedSuperAdmin';
 
 let server: Server;
 
@@ -12,6 +13,7 @@ const startServer = async () => {
   try {
     await connectDB();
     await connectRedis();
+    await seedSuperAdmin();
 
     server = app.listen(envVars.PORT, () => {
       console.log(`✅ Server is running on port ${envVars.PORT}`);

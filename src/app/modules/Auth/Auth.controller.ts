@@ -26,6 +26,7 @@ const loginUser = catchAsync(async (req, res) => {
     message: 'User logged in successfully',
     data: {
       accessToken,
+      refreshToken,
       user,
     },
   });
@@ -74,6 +75,7 @@ const verifyOTP = catchAsync(async (req, res) => {
     message: 'Email verified successfully',
     data: {
       accessToken,
+      refreshToken,
       user,
     },
   });

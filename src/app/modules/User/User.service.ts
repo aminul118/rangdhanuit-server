@@ -23,8 +23,30 @@ const getSingleUserFromDB = async (id: string) => {
   return result;
 };
 
+const getMe = async (email: string, role: string) => {
+  const result = await User.findOne({ email, role });
+  return result;
+};
+
+const updateUserStatus = async (id: string, status: string) => {
+  const result = await User.findByIdAndUpdate(id, { status }, { new: true });
+  return result;
+};
+
+const deleteUserFromDB = async (id: string) => {
+  const result = await User.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true },
+  );
+  return result;
+};
+
 export const UserService = {
   createUserService,
   getAllUsersFromDB,
   getSingleUserFromDB,
+  getMe,
+  updateUserStatus,
+  deleteUserFromDB,
 };

@@ -1,9 +1,7 @@
 import httpStatus from 'http-status-codes';
-import jwt, { Secret } from 'jsonwebtoken';
 import { IUser } from '@module/User/User.interface';
 import { User } from '@module/User/User.model';
 import { ILoginUser, IResetPassword } from './Auth.interface';
-import { createToken } from './Auth.utils';
 import envVars from '@config/env';
 import AppError from '@error/AppError';
 import sendEmail from '@utils/sendEmail';
@@ -67,20 +65,16 @@ const forgotPassword = async (email: string) => {
     .update(resetToken)
     .digest('hex');
 
-  const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
-
   // We can store reset token in redis too, but for now keeping it simple with email link
   // The user didn't explicitly ask to move reset token to redis, but it's better.
   // I'll stick to email link with hash for reset token for now as it's common.
-  
+
   const resetLink = `${envVars.FRONTEND_URL}/reset-password?token=${resetTokenHash}&email=${email}`;
 
-  await sendEmail(
-    email,
-    'Password Reset Request',
-    'forgetPassword',
-    { name: user.name, resetLink },
-  );
+  await sendEmail(email, 'Password Reset Request', 'forgetPassword', {
+    name: user.name,
+    resetLink,
+  });
 
   return null;
 };
@@ -91,16 +85,13 @@ const resetPassword = async (payload: IResetPassword) => {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  // In a real app, you'd verify the token hash here. 
+  // In a real app, you'd verify the token hash here.
   // For this implementation, we'll assume the token is verified or simplified.
   // Ideally, store the hash in DB or Redis.
 
   const hashedPassword = await bcrypt.hash(payload.newPassword, 12);
-  
-  await User.updateOne(
-    { email: payload.email },
-    { password: hashedPassword },
-  );
+
+  await User.updateOne({ email: payload.email }, { password: hashedPassword });
 
   return null;
 };
@@ -118,12 +109,10 @@ const sendOTP = async (email: string) => {
     EX: OTP_EXPIRATION,
   });
 
-  await sendEmail(
-    email,
-    'Your OTP Code',
-    'otp',
-    { name: user.name, otp },
-  );
+  await sendEmail(email, 'Your OTP Code', 'verifyOTP', {
+    name: user.name,
+    otp,
+  });
 
   return null;
 };
@@ -141,10 +130,7 @@ const verifyOTP = async (email: string, otp: string) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'Invalid or expired OTP');
   }
 
-  await User.updateOne(
-    { email },
-    { isVerified: true },
-  );
+  await User.updateOne({ email }, { isVerified: true });
 
   const tokens = createUserToken(user);
 

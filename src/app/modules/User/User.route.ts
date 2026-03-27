@@ -1,8 +1,21 @@
 import express from 'express';
 import { UserController } from './User.controller';
+import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
 router.post('/create-user', UserController.createUser);
+
+router.get('/me', auth('ADMIN', 'USER', 'SUPER_ADMIN'), UserController.getMe);
+
+router.get('/', auth('ADMIN', 'SUPER_ADMIN'), UserController.getAllUsers);
+
+router.patch(
+  '/:id/status',
+  auth('ADMIN', 'SUPER_ADMIN'),
+  UserController.updateUserStatus,
+);
+
+router.delete('/:id', auth('ADMIN', 'SUPER_ADMIN'), UserController.deleteUser);
 
 export const UserRoutes = router;
