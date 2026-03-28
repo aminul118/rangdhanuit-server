@@ -45,6 +45,16 @@ const loginUser = async (payload: ILoginUser) => {
     throw new AppError(httpStatus.FORBIDDEN, 'Password not matched');
   }
 
+  // Intercept unverified users
+  if (!user.isVerified) {
+    // Send new OTP
+    await AuthService.sendOTP(user.email);
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      'USER_NOT_VERIFIED',
+    );
+  }
+
   const tokens = createUserToken(user);
 
   return {

@@ -14,7 +14,7 @@ router.get(
   UserController.getStatistics,
 );
 
-router.get('/', auth('ADMIN', 'SUPER_ADMIN'), UserController.getAllUsers);
+router.get('/', auth('ADMIN', 'SUPER_ADMIN', 'USER'), UserController.getAllUsers);
 
 router.patch(
   '/:id/status',
