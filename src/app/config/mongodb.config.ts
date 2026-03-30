@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
 import envVars from './env';
+import logger from '../utils/logger';
 
 const connectDB = async () => {
   try {
     await mongoose.connect(envVars.DB_URL);
-    console.log('✅ Connected to MongoDB');
-  } catch (error: any) {
-    console.error('❌ MongoDB connection failed:', error.message);
+    logger.log('✅ Connected to MongoDB');
+  } catch (error: unknown) {
+    logger.error('❌ MongoDB connection failed:', (error as Error).message);
     throw error;
   }
 };

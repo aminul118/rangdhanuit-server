@@ -1,6 +1,8 @@
-/* eslint-disable no-console */
-import bcrypt from 'bcryptjs';
+import { hashPassword } from './hashPassword';
+import logger from './logger';
 import envVars from '../config/env';
+
+
 import { User } from '../modules/User/User.model';
 
 /**
@@ -12,25 +14,26 @@ const seedSuperAdmin = async () => {
     const { NAME, EMAIL, PASSWORD } = envVars.SUPER_ADMIN;
 
     if (!EMAIL || !PASSWORD) {
-      console.warn(
+      logger.warn(
         '⚠️  Super Admin credentials not fully configured in environment variables. Skipping seed.',
       );
+
       return;
     }
 
     const isSuperAdminExist = await User.findOne({ email: EMAIL });
 
     if (isSuperAdminExist) {
-      // console.log('ℹ️  Super admin already exists');
+      logger.log('ℹ️  Super admin already exists');
+
       return;
     }
 
-    console.log('🚀 Initiating Super Admin seeding...');
+    logger.log('🚀 Initiating Super Admin seeding...');
 
-    const hashedPassword = await bcrypt.hash(
-      PASSWORD,
-      envVars.BCRYPT_SALT_ROUND,
-    );
+
+    const hashedPassword = await hashPassword(PASSWORD);
+
 
     const payload = {
       name: NAME || 'Super Admin',
@@ -43,10 +46,12 @@ const seedSuperAdmin = async () => {
     };
 
     const superAdmin = await User.create(payload);
-    console.log('✅ Super Admin created successfully:', superAdmin.email);
+    logger.log('✅ Super Admin created successfully:', superAdmin.email);
+
   } catch (error) {
-    console.error('❌ Error seeding Super Admin:', error);
+    logger.error('❌ Error seeding Super Admin:', error);
   }
+
 };
 
 export default seedSuperAdmin;

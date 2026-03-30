@@ -1,12 +1,16 @@
 import { Server } from 'http';
+import logger from './logger';
+
 
 const serverGracefulShutdown = (server: Server) => {
   const shutdown = (reason: string, err?: unknown) => {
-    console.log(`⚠️  ${reason} --> Server shutting down gracefully.`, err || '');
+    logger.log(`⚠️  ${reason} --> Server shutting down gracefully.`, err || '');
+
 
     if (server) {
       server.close(() => {
-        console.log('🔻 Server closed.');
+        logger.log('🔻 Server closed.');
+
         process.exit(1);
       });
     } else {

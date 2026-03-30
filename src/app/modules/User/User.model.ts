@@ -1,5 +1,8 @@
 import { Schema, model } from 'mongoose';
-import bcrypt from 'bcryptjs';
+import { hashPassword, comparePassword } from '../../utils/hashPassword';
+
+
+
 import { IUser, UserModel } from './User.interface';
 
 const userSchema = new Schema<IUser, UserModel>(
@@ -38,8 +41,9 @@ const userSchema = new Schema<IUser, UserModel>(
 
 userSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10);
+    this.password = await hashPassword(this.password);
   }
+
   next();
 });
 
@@ -51,7 +55,8 @@ userSchema.statics.isPasswordMatched = async function (
   plainPassword,
   hashedPassword,
 ) {
-  return await bcrypt.compare(plainPassword, hashedPassword);
+  return await comparePassword(plainPassword, hashedPassword);
+
 };
 
 export const User = model<IUser, UserModel>('User', userSchema);

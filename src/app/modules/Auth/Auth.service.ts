@@ -6,7 +6,9 @@ import envVars from '@config/env';
 import AppError from '@error/AppError';
 import sendEmail from '@utils/sendEmail';
 import crypto from 'crypto';
-import bcrypt from 'bcryptjs';
+import { hashPassword } from '@utils/hashPassword';
+
+
 import { redisClient } from '@config/redis.config';
 import { createUserToken } from '@utils/userTokens';
 
@@ -99,7 +101,8 @@ const resetPassword = async (payload: IResetPassword) => {
   // For this implementation, we'll assume the token is verified or simplified.
   // Ideally, store the hash in DB or Redis.
 
-  const hashedPassword = await bcrypt.hash(payload.newPassword, 12);
+  const hashedPassword = await hashPassword(payload.newPassword);
+
 
   await User.updateOne({ email: payload.email }, { password: hashedPassword });
 
@@ -167,7 +170,8 @@ const changePassword = async (user: { email: string }, payload: IChangePassword)
     throw new AppError(httpStatus.FORBIDDEN, 'Current password not matched');
   }
 
-  const hashedPassword = await bcrypt.hash(payload.newPassword, 12);
+  const hashedPassword = await hashPassword(payload.newPassword);
+
 
   await User.updateOne({ email: user.email }, { password: hashedPassword });
 
