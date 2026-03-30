@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
-import slugify from 'slugify';
 import { IPortfolio } from './Portfolio.interface';
+import { slugPlugin } from '../../utils/slugPlugin';
+
 
 const portfolioSchema = new Schema<IPortfolio>(
   {
@@ -19,27 +20,8 @@ const portfolioSchema = new Schema<IPortfolio>(
   },
 );
 
-portfolioSchema.pre('save', function (next) {
-  if (this.isModified('title') || this.isNew) {
-    this.slug = slugify(this.title, {
-      lower: true,
-      trim: true,
-      strict: false, // Allow unicode characters for Bangla support
-    });
-  }
-  next();
-});
-
-portfolioSchema.pre('findOneAndUpdate', function (next) {
-  const update = this.getUpdate() as Record<string, unknown>;
-  if (update && update.title) {
-    update.slug = slugify(update.title as string, {
-      lower: true,
-      trim: true,
-      strict: false,
-    });
-  }
-  next();
-});
+// Apply slug plugin
+portfolioSchema.plugin(slugPlugin, { sourceField: 'title' });
 
 export const Portfolio = model<IPortfolio>('Portfolio', portfolioSchema);
+

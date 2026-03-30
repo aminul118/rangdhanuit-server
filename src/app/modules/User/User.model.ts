@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { hashPassword, comparePassword } from '../../utils/hashPassword';
+import { slugPlugin } from '../../utils/slugPlugin';
+
 
 
 
@@ -8,6 +10,8 @@ import { IUser, UserModel } from './User.interface';
 const userSchema = new Schema<IUser, UserModel>(
   {
     name: { type: String, required: true },
+    slug: { type: String, unique: true, index: true },
+
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: 0 },
     role: {
@@ -46,6 +50,10 @@ userSchema.pre('save', async function (next) {
 
   next();
 });
+
+// Apply slug plugin to the name field
+userSchema.plugin(slugPlugin, { sourceField: 'name' });
+
 
 userSchema.statics.isUserExistsByEmail = async function (email: string) {
   return await User.findOne({ email }).select('+password');

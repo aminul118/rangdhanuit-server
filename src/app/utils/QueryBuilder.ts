@@ -12,7 +12,7 @@ export class QueryBuilder<T> {
   }
 
   search(searchableFields: string[]) {
-    const searchTerm = this.query?.searchTerm;
+    const searchTerm = this.query?.searchTerm || this.query?.search;
     if (searchTerm) {
       this.modelQuery = this.modelQuery.find({
         $or: searchableFields.map(
@@ -29,10 +29,21 @@ export class QueryBuilder<T> {
 
   filter() {
     const queryObj = { ...this.query };
-    const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
-    excludeFields.forEach((el) => delete queryObj[el]);
+    const excludeFields = [
+      'searchTerm',
+      'search',
+      'sort',
+      'limit',
+      'page',
+      'fields',
+    ];
 
-    this.modelQuery = this.modelQuery.find(queryObj as any);
+    // Filter out excluded fields to avoid dynamic deletion (bad for performance/linting)
+    const filteredQuery = Object.fromEntries(
+      Object.entries(queryObj).filter(([key]) => !excludeFields.includes(key)),
+    );
+
+    this.modelQuery = this.modelQuery.find(filteredQuery as any);
 
     return this;
   }

@@ -12,7 +12,9 @@ export interface IUser {
   designation?: string;
   bio?: string;
   contactNo?: string;
+  slug?: string;
 }
+
 
 export type UserRole = 'ADMIN' | 'USER' | 'SUPER_ADMIN';
 export type UserStatus = 'ACTIVE' | 'BLOCKED';
