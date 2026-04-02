@@ -1,21 +1,21 @@
-import express, { Router } from 'express';
-
+import { Router } from 'express';
 import { AuthRoutes } from '../modules/Auth/Auth.route';
 import { UserRoutes } from '../modules/User/User.route';
 import { ConversationRoutes } from '../modules/Conversation/Conversation.route';
-
-const router = express.Router();
-
 import { PortfolioRoutes } from '../modules/Portfolio/Portfolio.route';
 import { NotificationRoutes } from '../modules/Notification/Notification.route';
 import { BlogRoutes } from '../modules/Blog/Blog.route';
 import { ServiceRoutes } from '../modules/Service/Service.route';
+import { ContactRoutes } from '../modules/Contact/Contact.route';
 
+const router = Router();
 
-const moduleRoutes: {
+interface Routes {
   path: string;
   route: Router;
-}[] = [
+}
+
+const moduleRoutes: Routes[] = [
   {
     path: '/auth',
     route: AuthRoutes,
@@ -43,6 +43,10 @@ const moduleRoutes: {
   {
     path: '/services',
     route: ServiceRoutes,
+  },
+  {
+    path: '/contacts',
+    route: ContactRoutes,
   },
 ];
 
