@@ -16,10 +16,11 @@ const handleCastError = (err: mongoose.Error.CastError): TGenericErrorResponse =
   ];
 
   const statusCode = 400;
+  const message = `Invalid ${err.path}`;
 
   return {
     statusCode,
-    message: 'Invalid ID',
+    message: message.charAt(0).toUpperCase() + message.slice(1),
     errorSources,
   };
 };

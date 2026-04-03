@@ -15,8 +15,13 @@ const createPortfolio = catchAsync(async (req: Request, res: Response) => {
   if (typeof portfolioData.technologies === 'string') {
     portfolioData.technologies = portfolioData.technologies
       .split(',')
-      .map((t: string) => t.trim());
+      .map((t: string) => t.trim())
+      .filter(Boolean);
   }
+
+  // Normalize isFeatured to Boolean
+  portfolioData.isFeatured =
+    portfolioData.isFeatured === 'on' || portfolioData.isFeatured === 'true';
 
   const result = await PortfolioService.createPortfolioIntoDB(portfolioData);
   sendResponse(res, {
@@ -69,8 +74,13 @@ const updatePortfolio = catchAsync(async (req: Request, res: Response) => {
   if (typeof portfolioData.technologies === 'string') {
     portfolioData.technologies = portfolioData.technologies
       .split(',')
-      .map((t: string) => t.trim());
+      .map((t: string) => t.trim())
+      .filter(Boolean);
   }
+
+  // Normalize isFeatured to Boolean (checkboxes send "on" if checked, missing if unchecked)
+  portfolioData.isFeatured =
+    portfolioData.isFeatured === 'on' || portfolioData.isFeatured === 'true';
 
   const result = await PortfolioService.updatePortfolioIntoDB(
     req.params.id as string,
