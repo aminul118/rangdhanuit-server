@@ -2,12 +2,13 @@ import httpStatus from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { PartnerService } from './Partner.service';
+import { ImageHandler } from '../../utils/imageHandler';
 
 const createPartner = catchAsync(async (req, res) => {
   const file = req.file;
 
   if (file) {
-    req.body.logo = file.path;
+    req.body.logo = await ImageHandler.uploadImage(file as Express.Multer.File, 'partners');
   }
 
   const result = await PartnerService.createPartnerInDB(req.body);
@@ -48,7 +49,7 @@ const updatePartner = catchAsync(async (req, res) => {
   const file = req.file;
 
   if (file) {
-    req.body.logo = file.path;
+    req.body.logo = await ImageHandler.uploadImage(file as Express.Multer.File, 'partners');
   }
 
   const result = await PartnerService.updatePartnerInDB(id as string, req.body);

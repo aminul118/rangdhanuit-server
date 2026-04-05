@@ -3,12 +3,13 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status-codes";
 import { PortfolioService } from "./Portfolio.service";
+import { ImageHandler } from "../../utils/imageHandler";
 
 const createPortfolio = catchAsync(async (req: Request, res: Response) => {
   const portfolioData = { ...req.body };
 
   if (req.file) {
-    portfolioData.image = (req.file as Express.Multer.File & { path: string }).path;
+    portfolioData.image = await ImageHandler.uploadImage(req.file as Express.Multer.File, 'portfolios');
   }
 
   // Handle technologies if sent as string from FormData
@@ -68,7 +69,7 @@ const updatePortfolio = catchAsync(async (req: Request, res: Response) => {
   const portfolioData = { ...req.body };
 
   if (req.file) {
-    portfolioData.image = (req.file as Express.Multer.File & { path: string }).path;
+    portfolioData.image = await ImageHandler.uploadImage(req.file as Express.Multer.File, 'portfolios');
   }
 
   if (typeof portfolioData.technologies === 'string') {
