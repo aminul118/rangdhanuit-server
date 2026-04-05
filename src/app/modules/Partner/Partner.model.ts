@@ -7,7 +7,6 @@ const partnerSchema = new Schema<IPartner>(
     slug: { type: String, unique: true, index: true },
     logo: { type: String, required: false },
     link: { type: String },
-    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,
@@ -15,16 +14,5 @@ const partnerSchema = new Schema<IPartner>(
   },
 );
 
-
-// Filter out deleted partners by default
-partnerSchema.pre('find', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-partnerSchema.pre('findOne', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
 
 export const Partner = model<IPartner>('Partner', partnerSchema);

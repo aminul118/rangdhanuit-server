@@ -3,5 +3,4 @@ export interface IPartner {
   slug: string;
   logo?: string;
   link?: string;
-  isDeleted: boolean;
 }

@@ -7,7 +7,7 @@ const createPartnerInDB = async (payload: IPartner) => {
 };
 
 const getAllPartnersFromDB = async () => {
-  const result = await Partner.find({ isDeleted: false });
+  const result = await Partner.find();
   return result;
 };
 
@@ -26,11 +26,7 @@ const updatePartnerBySlugInDB = async (slug: string, payload: Partial<IPartner>)
 };
 
 const deletePartnerBySlugFromDB = async (slug: string) => {
-  const result = await Partner.findOneAndUpdate(
-    { slug },
-    { isDeleted: true },
-    { new: true },
-  );
+  const result = await Partner.findOneAndDelete({ slug });
   return result;
 };
 
