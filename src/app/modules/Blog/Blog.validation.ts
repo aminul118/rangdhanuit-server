@@ -16,6 +16,7 @@ const createBlogValidationSchema = z.object({
       required_error: 'Featured image is required',
     }),
     status: z.enum(['DRAFT', 'PUBLISHED']).default('PUBLISHED'),
+    isFeatured: z.boolean().optional().default(false),
   }),
 });
 
@@ -27,6 +28,7 @@ const updateBlogValidationSchema = z.object({
     tags: z.array(z.string()).optional(),
     featuredImage: z.string().optional(),
     status: z.enum(['DRAFT', 'PUBLISHED']).optional(),
+    isFeatured: z.boolean().optional(),
   }),
 });
 

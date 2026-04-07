@@ -10,6 +10,7 @@ const router = Router();
 // Public routes
 router.get('/', BlogController.getAllBlogs);
 router.get('/:slug', BlogController.getSingleBlogBySlug);
+router.patch('/view/:slug', BlogController.incrementBlogView);
 
 // Admin/Super Admin protected routes
 router.get(

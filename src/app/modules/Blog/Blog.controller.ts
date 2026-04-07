@@ -111,6 +111,18 @@ const deleteBlogBySlug = catchAsync(async (req, res) => {
   });
 });
 
+const incrementBlogView = catchAsync(async (req, res) => {
+  const { slug } = req.params;
+  const result = await BlogService.incrementBlogViewInDB(slug as string);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Blog view incremented successfully',
+    data: result,
+  });
+});
+
 export const BlogController = {
   getAllBlogs,
   getSingleBlogBySlug,
@@ -118,4 +130,5 @@ export const BlogController = {
   createBlog,
   updateBlogBySlug,
   deleteBlogBySlug,
+  incrementBlogView,
 };

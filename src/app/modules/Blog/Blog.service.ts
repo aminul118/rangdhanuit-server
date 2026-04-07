@@ -24,14 +24,19 @@ const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleBlogBySlugFromDB = async (slug: string) => {
-  // Update view count and fetch
-  const result = await Blog.findOneAndUpdate(
+  return await Blog.findOne({
+    slug,
+    status: 'PUBLISHED',
+    isDeleted: false,
+  }).populate('author', 'name email picture designation');
+};
+
+const incrementBlogViewInDB = async (slug: string) => {
+  return await Blog.findOneAndUpdate(
     { slug, status: 'PUBLISHED', isDeleted: false },
     { $inc: { views: 1 } },
     { new: true },
-  ).populate('author', 'name email picture designation');
-
-  return result;
+  );
 };
 
 const getBlogBySlugForAdminFromDB = async (slug: string) => {
@@ -73,4 +78,5 @@ export const BlogService = {
   createBlogInDB,
   updateBlogBySlugFromDB,
   deleteBlogBySlugFromDB,
+  incrementBlogViewInDB,
 };

@@ -18,6 +18,7 @@ const blogSchema = new Schema<IBlog>(
       default: 'PUBLISHED',
     },
     isDeleted: { type: Boolean, default: false },
+    isFeatured: { type: Boolean, default: false },
   },
   {
     timestamps: true,
