@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IPartner } from './Partner.interface';
+import generateSlug from '../../utils/generateSlug';
 
 const partnerSchema = new Schema<IPartner>(
   {
@@ -13,5 +14,7 @@ const partnerSchema = new Schema<IPartner>(
     versionKey: false,
   },
 );
+
+generateSlug<IPartner>(partnerSchema, 'name', 'slug');
 
 export const Partner = model<IPartner>('Partner', partnerSchema);

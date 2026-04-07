@@ -18,4 +18,8 @@ const portfolioSchema = new Schema<IPortfolio>(
   },
 );
 
+import generateSlug from '../../utils/generateSlug';
+
+generateSlug<IPortfolio>(portfolioSchema, 'title', 'slug');
+
 export const Portfolio = model<IPortfolio>('Portfolio', portfolioSchema);

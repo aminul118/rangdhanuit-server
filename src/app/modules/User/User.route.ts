@@ -1,11 +1,10 @@
-import express from 'express';
+import { Router } from 'express';
 import { UserController } from './User.controller';
 import auth from '../../middlewares/auth';
-import { makeSlug } from '../../middlewares/makeSlug';
 
-const router = express.Router();
+const router = Router();
 
-router.post('/create-user', makeSlug(['name']), UserController.createUser);
+router.post('/create-user', UserController.createUser);
 
 router.get('/me', auth('ADMIN', 'USER', 'SUPER_ADMIN'), UserController.getMe);
 
@@ -38,7 +37,6 @@ router.delete('/:id', auth('ADMIN', 'SUPER_ADMIN'), UserController.deleteUser);
 router.patch(
   '/update-profile',
   auth('USER', 'ADMIN', 'SUPER_ADMIN'),
-  makeSlug(['name']),
   UserController.updateProfile,
 );
 

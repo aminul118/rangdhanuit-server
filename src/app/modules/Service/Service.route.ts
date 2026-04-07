@@ -1,12 +1,11 @@
-import express from 'express';
+import { Router } from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { ServiceValidations } from './Service.validation';
 import { ServiceControllers } from './Service.controller';
 import auth from '../../middlewares/auth';
 import { multerUpload } from '../../config/multer.config';
-import { makeSlug } from '../../middlewares/makeSlug';
 
-const router = express.Router();
+const router = Router();
 
 router.get('/', ServiceControllers.getAllServices);
 
@@ -19,7 +18,6 @@ router.post(
     { name: 'image', maxCount: 1 },
     { name: 'icon', maxCount: 1 },
   ]),
-  makeSlug(['title']),
   validateRequest(ServiceValidations.createServiceValidationSchema),
   ServiceControllers.createService,
 );
@@ -31,7 +29,6 @@ router.patch(
     { name: 'image', maxCount: 1 },
     { name: 'icon', maxCount: 1 },
   ]),
-  makeSlug(['title']),
   validateRequest(ServiceValidations.updateServiceValidationSchema),
   ServiceControllers.updateServiceBySlug,
 );

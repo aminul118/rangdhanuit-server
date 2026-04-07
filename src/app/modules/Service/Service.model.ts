@@ -1,3 +1,4 @@
+import generateSlug from '../../utils/generateSlug';
 import { Schema, model } from 'mongoose';
 import { IService, ServiceModel } from './Service.interface';
 
@@ -17,7 +18,6 @@ const serviceSchema = new Schema<IService, ServiceModel>(
   },
 );
 
-// Query middleware to exclude deleted documents
 serviceSchema.pre('find', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
@@ -27,5 +27,7 @@ serviceSchema.pre('findOne', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
+
+generateSlug<IService>(serviceSchema, 'title', 'slug');
 
 export const Service = model<IService, ServiceModel>('Service', serviceSchema);

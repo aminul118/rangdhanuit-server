@@ -1,3 +1,4 @@
+import generateSlug from '../../utils/generateSlug';
 import { Schema, model } from 'mongoose';
 import { IBlog } from './Blog.interface';
 
@@ -23,5 +24,7 @@ const blogSchema = new Schema<IBlog>(
     versionKey: false,
   },
 );
+
+generateSlug<IBlog>(blogSchema, 'title', 'slug');
 
 export const Blog = model<IBlog>('Blog', blogSchema);

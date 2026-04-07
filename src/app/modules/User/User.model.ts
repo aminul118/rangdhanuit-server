@@ -39,6 +39,8 @@ const userSchema = new Schema<IUser, UserModel>(
   },
 );
 
+import generateSlug from '../../utils/generateSlug';
+
 userSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
     this.password = await hashPassword(this.password);
@@ -46,6 +48,8 @@ userSchema.pre('save', async function (next) {
 
   next();
 });
+
+generateSlug<IUser>(userSchema, 'name', 'slug');
 
 userSchema.statics.isUserExistsByEmail = async function (email: string) {
   return await User.findOne({ email }).select('+password');
