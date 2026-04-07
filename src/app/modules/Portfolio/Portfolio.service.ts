@@ -8,11 +8,8 @@ const createPortfolioIntoDB = async (payload: IPortfolio) => {
 };
 
 const getAllPortfoliosFromDB = async (query: Record<string, unknown>) => {
-  const portfolioQuery = new QueryBuilder(
-    Portfolio.find({ isDeleted: false }),
-    query,
-  )
-    .search(['title', 'description'])
+  const portfolioQuery = new QueryBuilder(Portfolio.find(), query)
+    .search(['title', 'content'])
     .filter()
     .sort()
     .paginate()
@@ -25,7 +22,7 @@ const getAllPortfoliosFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSinglePortfolioBySlugFromDB = async (slug: string) => {
-  const result = await Portfolio.findOne({ slug, isDeleted: false });
+  const result = await Portfolio.findOne({ slug });
   return result;
 };
 
@@ -41,11 +38,7 @@ const updatePortfolioBySlugFromDB = async (
 };
 
 const deletePortfolioBySlugFromDB = async (slug: string) => {
-  const result = await Portfolio.findOneAndUpdate(
-    { slug },
-    { isDeleted: true },
-    { new: true },
-  );
+  const result = await Portfolio.findOneAndDelete({ slug });
   return result;
 };
 

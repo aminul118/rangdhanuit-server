@@ -6,7 +6,7 @@ const router = Router();
 
 router.post(
   '/create-portfolio',
-  multerUpload.single('image'),
+  multerUpload.single('thumbnail'),
   PortfolioController.createPortfolio,
 );
 router.get('/', PortfolioController.getAllPortfolios);
@@ -14,7 +14,7 @@ router.get('/', PortfolioController.getAllPortfolios);
 router.get('/:slug', PortfolioController.getPortfolioBySlug);
 router.patch(
   '/:slug',
-  multerUpload.single('image'),
+  multerUpload.single('thumbnail'),
   PortfolioController.updatePortfolioBySlug,
 );
 router.delete('/:slug', PortfolioController.deletePortfolioBySlug);

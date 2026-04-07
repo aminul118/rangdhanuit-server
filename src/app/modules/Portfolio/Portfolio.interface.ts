@@ -1,10 +1,10 @@
 export interface IPortfolio {
   title: string;
   slug: string;
-  description: string;
-  image: string;
-  link?: string;
+  content: string;
+  thumbnail: string;
+  liveLink?: string;
+  github?: string;
   technologies: string[];
   isFeatured: boolean;
-  isDeleted: boolean;
 }

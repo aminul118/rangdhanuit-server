@@ -9,7 +9,7 @@ const createPortfolio = catchAsync(async (req: Request, res: Response) => {
   const portfolioData = { ...req.body };
 
   if (req.file) {
-    portfolioData.image = await ImageHandler.uploadImage(
+    portfolioData.thumbnail = await ImageHandler.uploadImage(
       req.file as Express.Multer.File,
       'portfolios',
     );
@@ -67,7 +67,7 @@ const updatePortfolioBySlug = catchAsync(
     const portfolioData = { ...req.body };
 
     if (req.file) {
-      portfolioData.image = await ImageHandler.uploadImage(
+      portfolioData.thumbnail = await ImageHandler.uploadImage(
         req.file as Express.Multer.File,
         'portfolios',
       );
