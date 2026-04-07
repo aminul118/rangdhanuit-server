@@ -44,7 +44,6 @@
         "@types/passport-google-oauth20": "^2.0.17",
         "@types/passport-jwt": "^4.0.1",
         "@types/passport-local": "^1.0.38",
-        "@types/transliteration": "^1.6.6",
         "cross-env": "^10.1.0",
         "eslint": "^9.33.0",
         "eslint-config-prettier": "^10.1.8",
@@ -238,8 +237,6 @@
     "@types/strip-bom": ["@types/strip-bom@3.0.0", "", {}, "sha512-xevGOReSYGM7g/kUBZzPqCrR/KYAo+F0yiPc85WFTJa0MSLtyFTVTU6cJu/aV4mid7IffDIWqo69THF2o4JiEQ=="],
 
     "@types/strip-json-comments": ["@types/strip-json-comments@0.0.30", "", {}, "sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ=="],
-
-    "@types/transliteration": ["@types/transliteration@1.6.6", "", { "dependencies": { "transliteration": "*" } }, "sha512-drgWFeHgZt16bXKhsu4cP6TlunW3Pu9MS1l9w7Qnm+bcsqf4/pnjnO6/uMAziCV8rnmuU3iCSk7J2zio1nR1+A=="],
 
     "@types/webidl-conversions": ["@types/webidl-conversions@7.0.3", "", {}, "sha512-CiJJvcRtIgzadHCYXw7dqEnMNRjhGZlYK05Mj9OyktqV8uVT8fD2BFOB7S1uwBE3Kj2Z+4UyPmFw/Ixgw/LAlA=="],
 

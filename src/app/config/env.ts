@@ -5,7 +5,7 @@ import getEnv from '../helpers/getEnv';
 
 const envPath =
   process.env.NODE_ENV === 'production'
-    ? path.join(process.cwd(), '.env.prod')
+    ? path.join(process.cwd(), '.env.production')
     : [
         path.join(process.cwd(), '.env.local'),
         path.join(process.cwd(), '.env'),
@@ -25,6 +25,7 @@ const envVars = {
   JWT_REFRESH_EXPIRES: getEnv('JWT_REFRESH_EXPIRES'),
   BCRYPT_SALT_ROUND: Number(getEnv('BCRYPT_SALT_ROUND')),
   FRONTEND_URL: getEnv('FRONTEND_URL'),
+  COOKIE_DOMAIN: getEnv('COOKIE_DOMAIN'),
   SUPER_ADMIN: {
     NAME: getEnv('SUPER_ADMIN_NAME'),
     EMAIL: getEnv('SUPER_ADMIN_EMAIL'),
