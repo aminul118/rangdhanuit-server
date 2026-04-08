@@ -4,12 +4,21 @@ import { ServiceValidations } from './Service.validation';
 import { ServiceControllers } from './Service.controller';
 import auth from '../../middlewares/auth';
 import { multerUpload } from '../../config/multer.config';
+import { cacheMiddleware } from '../../middlewares/cacheMiddleware';
 
 const router = Router();
 
-router.get('/', ServiceControllers.getAllServices);
+router.get(
+  '/',
+  cacheMiddleware('services', 3600),
+  ServiceControllers.getAllServices,
+);
 
-router.get('/slug/:slug', ServiceControllers.getSingleServiceBySlug);
+router.get(
+  '/slug/:slug',
+  cacheMiddleware('services', 3600),
+  ServiceControllers.getSingleServiceBySlug,
+);
 
 router.post(
   '/',

@@ -3,6 +3,7 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { PartnerService } from './Partner.service';
 import { ImageHandler } from '../../utils/imageHandler';
+import { clearCache } from '../../middlewares/cacheMiddleware';
 
 const createPartner = catchAsync(async (req, res) => {
   const file = req.file;
@@ -15,6 +16,9 @@ const createPartner = catchAsync(async (req, res) => {
   }
 
   const result = await PartnerService.createPartnerInDB(req.body);
+
+  // Clear cache for partners
+  clearCache('partners');
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -65,6 +69,9 @@ const updatePartnerBySlug = catchAsync(async (req, res) => {
     req.body,
   );
 
+  // Clear cache for partners
+  clearCache('partners');
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -76,6 +83,9 @@ const updatePartnerBySlug = catchAsync(async (req, res) => {
 const deletePartnerBySlug = catchAsync(async (req, res) => {
   const { slug } = req.params;
   const result = await PartnerService.deletePartnerBySlugFromDB(slug as string);
+
+  // Clear cache for partners
+  clearCache('partners');
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

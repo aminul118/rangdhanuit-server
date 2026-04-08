@@ -4,12 +4,17 @@ import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { BlogValidation } from './Blog.validation';
 import { multerUpload } from '../../config/multer.config';
+import { cacheMiddleware } from '../../middlewares/cacheMiddleware';
 
 const router = Router();
 
 // Public routes
-router.get('/', BlogController.getAllBlogs);
-router.get('/:slug', BlogController.getSingleBlogBySlug);
+router.get('/', cacheMiddleware('blogs', 3600), BlogController.getAllBlogs);
+router.get(
+  '/:slug',
+  cacheMiddleware('blogs', 3600),
+  BlogController.getSingleBlogBySlug,
+);
 router.patch('/view/:slug', BlogController.incrementBlogView);
 
 // Admin/Super Admin protected routes

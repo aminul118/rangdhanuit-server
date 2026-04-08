@@ -4,6 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status-codes';
 import { PortfolioService } from './Portfolio.service';
 import { ImageHandler } from '../../utils/imageHandler';
+import { clearCache } from '../../middlewares/cacheMiddleware';
 
 const createPortfolio = catchAsync(async (req: Request, res: Response) => {
   const portfolioData = { ...req.body };
@@ -28,6 +29,10 @@ const createPortfolio = catchAsync(async (req: Request, res: Response) => {
     portfolioData.isFeatured === 'on' || portfolioData.isFeatured === 'true';
 
   const result = await PortfolioService.createPortfolioIntoDB(portfolioData);
+
+  // Clear cache for portfolios
+  clearCache('portfolios');
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -88,6 +93,10 @@ const updatePortfolioBySlug = catchAsync(
       req.params.slug as string,
       portfolioData,
     );
+
+    // Clear cache for portfolios
+    clearCache('portfolios');
+
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -102,6 +111,10 @@ const deletePortfolioBySlug = catchAsync(
     const result = await PortfolioService.deletePortfolioBySlugFromDB(
       req.params.slug as string,
     );
+
+    // Clear cache for portfolios
+    clearCache('portfolios');
+
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,

@@ -4,6 +4,7 @@ import sendResponse from '../../utils/sendResponse';
 import { BlogService } from './Blog.service';
 import { JwtPayload } from 'jsonwebtoken';
 import { ImageHandler } from '../../utils/imageHandler';
+import { clearCache } from '../../middlewares/cacheMiddleware';
 
 const getAllBlogs = catchAsync(async (req, res) => {
   const { result, meta } = await BlogService.getAllBlogsFromDB(req.query);
@@ -49,6 +50,9 @@ const createBlog = catchAsync(async (req, res) => {
     req.user as JwtPayload,
   );
 
+  // Clear cache for blogs
+  clearCache('blogs');
+
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
@@ -91,6 +95,9 @@ const updateBlogBySlug = catchAsync(async (req, res) => {
     payload,
   );
 
+  // Clear cache for blogs
+  clearCache('blogs');
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -103,6 +110,9 @@ const deleteBlogBySlug = catchAsync(async (req, res) => {
   const { slug } = req.params;
   const result = await BlogService.deleteBlogBySlugFromDB(slug as string);
 
+  // Clear cache for blogs
+  clearCache('blogs');
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -114,6 +124,9 @@ const deleteBlogBySlug = catchAsync(async (req, res) => {
 const incrementBlogView = catchAsync(async (req, res) => {
   const { slug } = req.params;
   const result = await BlogService.incrementBlogViewInDB(slug as string);
+
+  // Clear cache for blogs to show updated view count
+  clearCache('blogs');
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

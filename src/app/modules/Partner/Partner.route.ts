@@ -4,12 +4,21 @@ import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { PartnerValidation } from './Partner.validation';
 import { multerUpload } from '../../config/multer.config';
+import { cacheMiddleware } from '../../middlewares/cacheMiddleware';
 
 const router = Router();
 
 // Public routes
-router.get('/', PartnerController.getAllPartners);
-router.get('/:slug', PartnerController.getPartnerBySlug);
+router.get(
+  '/',
+  cacheMiddleware('partners', 3600),
+  PartnerController.getAllPartners,
+);
+router.get(
+  '/:slug',
+  cacheMiddleware('partners', 3600),
+  PartnerController.getPartnerBySlug,
+);
 
 // Admin/Super Admin protected routes
 router.post(

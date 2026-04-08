@@ -3,6 +3,7 @@ import { ServiceServices } from './Service.service';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { ImageHandler } from '../../utils/imageHandler';
+import { clearCache } from '../../middlewares/cacheMiddleware';
 
 const createService = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
@@ -19,6 +20,10 @@ const createService = catchAsync(async (req: Request, res: Response) => {
   }
 
   const result = await ServiceServices.createServiceIntoDB(payload);
+
+  // Clear cache for services
+  clearCache('services');
+
   sendResponse(res, {
     statusCode: 201,
     success: true,
@@ -74,6 +79,10 @@ const updateServiceBySlug = catchAsync(async (req: Request, res: Response) => {
     slug as string,
     payload,
   );
+
+  // Clear cache for services
+  clearCache('services');
+
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -87,6 +96,10 @@ const deleteServiceBySlug = catchAsync(async (req: Request, res: Response) => {
   const result = await ServiceServices.deleteServiceBySlugFromDB(
     slug as string,
   );
+
+  // Clear cache for services
+  clearCache('services');
+
   sendResponse(res, {
     statusCode: 200,
     success: true,
