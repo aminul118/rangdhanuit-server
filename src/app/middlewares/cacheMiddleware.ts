@@ -57,7 +57,11 @@ export const cacheMiddleware = (
       const originalJson = res.json;
       res.json = function (body) {
         // Store only successful GET responses
-        if (res.statusCode === 200 && body && body.success !== false) {
+        if (
+          (res.statusCode === 200 || res.statusCode === 201) &&
+          body &&
+          body.success !== false
+        ) {
           cacheService.set(cacheKey, body, ttl).catch((err) => {
             logger.error(`[Redis] Failed to set cache for ${cacheKey}:`, err);
           });

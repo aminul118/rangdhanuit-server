@@ -16,7 +16,6 @@ const createPortfolio = catchAsync(async (req: Request, res: Response) => {
     );
   }
 
-  // Handle technologies if sent as string from FormData
   if (typeof portfolioData.technologies === 'string') {
     portfolioData.technologies = portfolioData.technologies
       .split(',')
@@ -26,11 +25,12 @@ const createPortfolio = catchAsync(async (req: Request, res: Response) => {
 
   // Normalize isFeatured to Boolean
   portfolioData.isFeatured =
-    portfolioData.isFeatured === 'on' || portfolioData.isFeatured === 'true';
+    portfolioData.isFeatured === 'on' ||
+    portfolioData.isFeatured === 'true' ||
+    portfolioData.isFeatured === true;
 
   const result = await PortfolioService.createPortfolioIntoDB(portfolioData);
 
-  // Clear cache for portfolios
   await clearCache('portfolios');
 
   sendResponse(res, {
@@ -87,14 +87,15 @@ const updatePortfolioBySlug = catchAsync(
 
     // Normalize isFeatured to Boolean
     portfolioData.isFeatured =
-      portfolioData.isFeatured === 'on' || portfolioData.isFeatured === 'true';
+      portfolioData.isFeatured === 'on' ||
+      portfolioData.isFeatured === 'true' ||
+      portfolioData.isFeatured === true;
 
     const result = await PortfolioService.updatePortfolioBySlugFromDB(
       req.params.slug as string,
       portfolioData,
     );
 
-    // Clear cache for portfolios
     await clearCache('portfolios');
 
     sendResponse(res, {
@@ -112,7 +113,6 @@ const deletePortfolioBySlug = catchAsync(
       req.params.slug as string,
     );
 
-    // Clear cache for portfolios
     await clearCache('portfolios');
 
     sendResponse(res, {
