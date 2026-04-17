@@ -7,13 +7,13 @@ import { ImageHandler } from '../../utils/imageHandler';
 import { clearCache } from '../../middlewares/cacheMiddleware';
 
 const getAllBlogs = catchAsync(async (req, res) => {
-  const { result, meta } = await BlogService.getAllBlogsFromDB(req.query);
+  const { data, meta } = await BlogService.getAllBlogsFromDB(req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Blogs fetched successfully',
     meta,
-    data: result,
+    data,
   });
 });
 

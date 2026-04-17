@@ -33,15 +33,13 @@ const createService = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllServices = catchAsync(async (req: Request, res: Response) => {
-  const { meta, result } = await ServiceServices.getAllServicesFromDB(
-    req.query,
-  );
+  const { meta, data } = await ServiceServices.getAllServicesFromDB(req.query);
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: 'Services fetched successfully',
     meta,
-    data: result,
+    data,
   });
 });
 

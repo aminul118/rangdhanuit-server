@@ -14,13 +14,13 @@ const createInvoice = catchAsync(async (req, res) => {
 });
 
 const getAllInvoices = catchAsync(async (req, res) => {
-  const { result, meta } = await InvoiceService.getAllInvoices(req.query);
+  const { data, meta } = await InvoiceService.getAllInvoices(req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Invoices retrieved successfully',
     meta,
-    data: result,
+    data,
   });
 });
 

@@ -14,13 +14,13 @@ const createQuotation = catchAsync(async (req, res) => {
 });
 
 const getAllQuotations = catchAsync(async (req, res) => {
-  const { result, meta } = await QuotationService.getAllQuotations(req.query);
+  const { data, meta } = await QuotationService.getAllQuotations(req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Quotations retrieved successfully',
     meta,
-    data: result,
+    data,
   });
 });
 

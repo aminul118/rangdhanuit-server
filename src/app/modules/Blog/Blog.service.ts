@@ -4,7 +4,7 @@ import { QueryBuilder } from '../../utils/QueryBuilder';
 import { Blog } from './Blog.model';
 
 const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
-  const blogQuery = new QueryBuilder(
+  const { data, meta } = await new QueryBuilder(
     Blog.find({ isDeleted: false }).populate(
       'author',
       'name email picture designation',
@@ -15,12 +15,10 @@ const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
     .filter()
     .sort()
     .paginate()
-    .fields();
+    .fields()
+    .execute();
 
-  const result = await blogQuery.modelQuery;
-  const meta = await blogQuery.countTotal();
-
-  return { result, meta };
+  return { data, meta };
 };
 
 const getSingleBlogBySlugFromDB = async (slug: string) => {

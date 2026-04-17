@@ -7,7 +7,7 @@ const sendEmail = async (
   to: string,
   subject: string,
   template: string,
-  data: any,
+  data: Record<string, unknown>,
 ) => {
   const templatePath = path.join(
     process.cwd(),

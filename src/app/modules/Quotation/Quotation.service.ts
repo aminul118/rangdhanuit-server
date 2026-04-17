@@ -10,7 +10,7 @@ const createQuotation = async (payload: IQuotation) => {
 };
 
 const getAllQuotations = async (query: Record<string, unknown>) => {
-  const quotationQuery = new QueryBuilder(
+  const { data, meta } = await new QueryBuilder(
     Quotation.find({ isDeleted: { $ne: true } }),
     query,
   )
@@ -18,12 +18,10 @@ const getAllQuotations = async (query: Record<string, unknown>) => {
     .filter()
     .sort()
     .paginate()
-    .fields();
+    .fields()
+    .execute();
 
-  const result = await quotationQuery.modelQuery;
-  const meta = await quotationQuery.countTotal();
-
-  return { result, meta };
+  return { data, meta };
 };
 
 const getQuotationById = async (id: string) => {

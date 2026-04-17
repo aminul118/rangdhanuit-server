@@ -1,4 +1,5 @@
 import { Server as HttpServer } from 'http';
+import { Types } from 'mongoose';
 import { Server } from 'socket.io';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import envVars from './env';
@@ -119,8 +120,8 @@ export const initSocket = (server: HttpServer) => {
 
           // 4. Create Persistent Notification
           await NotificationService.createNotification({
-            recipient: recipientId as any,
-            sender: senderId as any,
+            recipient: recipientId as unknown as Types.ObjectId,
+            sender: senderId as unknown as Types.ObjectId,
             type: 'MESSAGE',
             content: content,
           });

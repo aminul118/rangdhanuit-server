@@ -8,17 +8,15 @@ const createPortfolioIntoDB = async (payload: IPortfolio) => {
 };
 
 const getAllPortfoliosFromDB = async (query: Record<string, unknown>) => {
-  const portfolioQuery = new QueryBuilder(Portfolio.find(), query)
+  const { data, meta } = await new QueryBuilder(Portfolio.find(), query)
     .search(['title', 'content'])
     .filter()
     .sort()
     .paginate()
-    .fields();
+    .fields()
+    .execute();
 
-  const result = await portfolioQuery.modelQuery;
-  const meta = await portfolioQuery.countTotal();
-
-  return { result, meta };
+  return { data, meta };
 };
 
 const getSinglePortfolioBySlugFromDB = async (slug: string) => {

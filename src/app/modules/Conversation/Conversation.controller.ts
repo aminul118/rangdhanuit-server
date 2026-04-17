@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../utils/catchAsync';
 import { ConversationService } from './Conversation.service';
 import httpStatus from 'http-status-codes';
 
 const getMyConversations = catchAsync(async (req: Request, res: Response) => {
-  const userId = (req.user as any).userId;
+  const userId = (req.user as JwtPayload).userId;
   const result = await ConversationService.getMyConversations(userId);
   res.status(httpStatus.OK).json({
     success: true,
@@ -29,7 +30,7 @@ const getConversationMessages = catchAsync(
 
 const markAsRead = catchAsync(async (req: Request, res: Response) => {
   const { conversationId } = req.params;
-  const userId = (req.user as any).userId;
+  const userId = (req.user as JwtPayload).userId;
   const result = await ConversationService.markAsRead(
     conversationId as string,
     userId,
@@ -42,7 +43,7 @@ const markAsRead = catchAsync(async (req: Request, res: Response) => {
 });
 
 const sendMessage = catchAsync(async (req: Request, res: Response) => {
-  const senderId = (req.user as any).userId;
+  const senderId = (req.user as JwtPayload).userId;
   const { recipientId, content } = req.body;
   const result = await ConversationService.sendMessage(
     senderId,

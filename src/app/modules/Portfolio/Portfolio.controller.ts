@@ -42,7 +42,7 @@ const createPortfolio = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllPortfolios = catchAsync(async (req: Request, res: Response) => {
-  const { result, meta } = await PortfolioService.getAllPortfoliosFromDB(
+  const { data, meta } = await PortfolioService.getAllPortfoliosFromDB(
     req.query,
   );
 
@@ -51,7 +51,7 @@ const getAllPortfolios = catchAsync(async (req: Request, res: Response) => {
     success: true,
     message: 'Portfolios retrieved successfully',
     meta,
-    data: result,
+    data,
   });
 });
 

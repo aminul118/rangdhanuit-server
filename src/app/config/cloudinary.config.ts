@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { v2 as cloudinary } from 'cloudinary';
 import envVars from './env';
 import AppError from '../errorHelpers/AppError';
@@ -26,11 +27,11 @@ const deleteFileFromCloudinary = async (url: string) => {
     await cloudinary.uploader.destroy(publicId, {
       resource_type: resourceType,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     throw new AppError(
       httpStatus.INTERNAL_SERVER_ERROR,
       'Cloudinary deletion failed',
-      error.message,
+      (error as any).message,
     );
   }
 };

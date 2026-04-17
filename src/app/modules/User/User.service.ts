@@ -15,7 +15,7 @@ const createUserService = async (payload: IUser) => {
 };
 
 const getAllUsersFromDB = async (query: Record<string, unknown>) => {
-  const userQuery = new QueryBuilder(
+  const { data, meta } = await new QueryBuilder(
     User.find({ isDeleted: { $ne: true } }),
     query,
   )
@@ -23,12 +23,10 @@ const getAllUsersFromDB = async (query: Record<string, unknown>) => {
     .filter()
     .sort()
     .paginate()
-    .fields();
+    .fields()
+    .execute();
 
-  const result = await userQuery.modelQuery;
-  const meta = await userQuery.countTotal();
-
-  return { result, meta };
+  return { data, meta };
 };
 
 const getSingleUserFromDB = async (id: string) => {

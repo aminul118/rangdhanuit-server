@@ -1,8 +1,11 @@
+import { Types } from 'mongoose';
 import envVars from '../config/env';
 import { IUser } from '../modules/User/User.interface';
 import { generateToken } from './jwt';
 
-const createUserToken = (user: Partial<IUser & { _id: any }>) => {
+const createUserToken = (
+  user: Partial<IUser & { _id: Types.ObjectId | string }>,
+) => {
   const jwtPayload = {
     userId: user._id,
     email: user.email,

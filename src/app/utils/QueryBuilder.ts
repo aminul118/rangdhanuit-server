@@ -109,4 +109,9 @@ export class QueryBuilder<T> {
 
     return result;
   }
+  async execute() {
+    const data = await this.modelQuery;
+    const meta = await this.countTotal();
+    return { data, meta };
+  }
 }

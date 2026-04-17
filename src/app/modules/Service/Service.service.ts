@@ -8,19 +8,17 @@ const createServiceIntoDB = async (payload: IService) => {
 };
 
 const getAllServicesFromDB = async (query: Record<string, unknown>) => {
-  const serviceQuery = new QueryBuilder(Service.find(), query)
+  const { data, meta } = await new QueryBuilder(Service.find(), query)
     .search(['title', 'description', 'content'])
     .filter()
     .sort()
     .paginate()
-    .fields();
-
-  const result = await serviceQuery.modelQuery;
-  const meta = await serviceQuery.countTotal();
+    .fields()
+    .execute();
 
   return {
+    data,
     meta,
-    result,
   };
 };
 
