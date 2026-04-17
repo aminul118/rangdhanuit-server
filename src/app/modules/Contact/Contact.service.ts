@@ -5,7 +5,7 @@ import { IContact } from './Contact.interface';
 const createContactIntoDB = async (payload: IContact) => {
   // Send Email to Admin
   await sendEmail(
-    envVars.SUPER_ADMIN.EMAIL as string,
+    envVars.EMAIL_SENDER.ADMIN_EMAIL as string,
     `New Contact Form Submission: ${payload.subject}`,
     'contactAdmin',
     {

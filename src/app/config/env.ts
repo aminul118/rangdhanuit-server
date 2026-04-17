@@ -37,6 +37,7 @@ const envVars = {
     SMTP_USER: getEnv('SMTP_USER'),
     SMTP_PASS: getEnv('SMTP_PASS'),
     SMTP_FROM: getEnv('SMTP_FROM'),
+    ADMIN_EMAIL: getEnv('ADMIN_EMAIL'),
   },
   REDIS: {
     host: getEnv('REDIS_HOST'),

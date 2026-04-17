@@ -8,6 +8,7 @@ const sendEmail = async (
   subject: string,
   template: string,
   data: Record<string, unknown>,
+  cc?: string | string[],
 ) => {
   const templatePath = path.join(
     process.cwd(),
@@ -17,10 +18,11 @@ const sendEmail = async (
   const html: string = await ejs.renderFile(templatePath, data);
 
   const mailOptions = {
-    from: `"Rangdhanu IT" <${envVars.EMAIL_SENDER.SMTP_FROM}>`,
+    from: envVars.EMAIL_SENDER.SMTP_FROM,
     to,
     subject,
     html,
+    ...(cc && { cc }),
   };
 
   await nodeMailerTransporter.sendMail(mailOptions);
